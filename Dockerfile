@@ -11,12 +11,12 @@ ENV REACT_APP_SERVER_HOST=$REACT_APP_SERVER_HOST
 ENV REACT_APP_TMDB_API_KEY=$REACT_APP_TMDB_API_KEY
 ENV PUBLIC_URL=$PUBLIC_URL
 
-COPY ./web/package.json ./web/yarn.lock ./
-RUN yarn install
+COPY ./web/package.json ./web/package-lock.json ./
+RUN npm install
 
 # Build front once upon multiarch build
 COPY ./web .
-RUN yarn run build
+RUN npm run build
 ### FRONT BUILD END ###
 
 
@@ -39,7 +39,7 @@ RUN apk add --update g++ \
 && cd server \
 && go mod tidy \
 && go clean -i -r -cache \
-&& go build -ldflags '-w -s' --o "torrserver" ./cmd 
+&& go build -ldflags '-w -s' --o "torrserver" ./cmd
 ### BUILD TORRSERVER MULTIARCH END ###
 
 
